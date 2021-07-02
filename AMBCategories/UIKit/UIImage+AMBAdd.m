@@ -139,4 +139,57 @@
     return scaleImage;
 }
 
+/**
+ 图片合成
+ 
+ @param image 底部图片
+ @param compoundImage 要合成的图片
+ @param rect 合成图片的大小和位置
+ @return 返回合成后的图片
+ */
+- (UIImage *)amb_compoundImageWithImage:(UIImage *)image compoundImage:(UIImage *)compoundImage compoundImageRect:(CGRect)rect
+{
+    // 1.获取图片
+    
+    // 2.开启上下文
+    UIGraphicsBeginImageContextWithOptions(image.size, NO, 0);
+    // 3.绘制背景图片
+    [image drawInRect:CGRectMake(0, 0, image.size.width, image.size.height)];
+    // 绘制要合成图片到当前上下文
+    [compoundImage drawInRect:rect];
+    // 4.从上下文中获取新图片
+    UIImage * newImage = UIGraphicsGetImageFromCurrentImageContext();
+    // 5.关闭图形上下文
+    UIGraphicsEndImageContext();
+    // 返回合成好的图片
+    return newImage;
+}
+
+/**
+ 图片指定区域裁剪
+ 
+ @param  image 裁剪的图片
+ @param  rect 裁剪的大小和位置
+ @return 裁剪后的图片
+ */
+- (UIImage *)amb_cutImageFromImage:(UIImage *)image inRect:(CGRect)rect
+{
+    // 把像素rect 转化为 点rect（如无转化则按原图像素取部分图片）
+    CGFloat scale = 1;
+    CGFloat x = rect.origin.x*scale, y = rect.origin.y*scale, w = rect.size.width*scale, h = rect.size.height*scale;
+    
+    if (image.size.width < w) w = image.size.width;
+    
+    if (image.size.height < h) h = image.size.height;
+    
+    CGRect dianRect = CGRectMake(x, y, w, h);
+    
+    // 截取部分图片并生成新图片
+    CGImageRef sourceImageRef = [image CGImage];
+    CGImageRef newImageRef = CGImageCreateWithImageInRect(sourceImageRef, dianRect);
+    UIImage *newImage = [UIImage imageWithCGImage:newImageRef scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
+    return newImage;
+}
+
+
 @end

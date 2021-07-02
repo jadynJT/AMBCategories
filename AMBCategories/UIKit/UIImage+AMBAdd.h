@@ -54,4 +54,23 @@
  */
 - (UIImage *)amb_scaleImageSize:(CGSize)size;
 
+/**
+ 图片合成
+ 
+ @param image 底部图片
+ @param compoundImage 要合成的图片
+ @param rect 合成图片的大小和位置
+ @return 返回合成后的图片
+ */
+- (UIImage *)amb_compoundImageWithImage:(UIImage *)image compoundImage:(UIImage *)compoundImage compoundImageRect:(CGRect)rect;
+
+/**
+ 图片指定区域裁剪
+ 
+ @param  image 裁剪的图片
+ @param  rect 裁剪的大小和位置
+ @return 裁剪后的图片
+ */
+- (UIImage *)amb_cutImageFromImage:(UIImage *)image inRect:(CGRect)rect;
+
 @end
